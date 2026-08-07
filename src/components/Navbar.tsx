@@ -31,7 +31,7 @@ export default function Navbar() {
       <motion.nav
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
+        transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] as const }}
         className={`fixed top-0 left-0 right-0 z-50 px-6 py-4 transition-all duration-400 ${
           scrolled
             ? 'bg-background/85 backdrop-blur-xl border-b border-white/[0.08]'
@@ -39,8 +39,8 @@ export default function Navbar() {
         }`}
       >
         <div className="max-w-[1200px] mx-auto flex items-center justify-between">
-          <a href="#" className="flex items-center gap-2.5 font-heading text-2xl font-bold text-text-primary no-underline">
-            <span className="w-2.5 h-2.5 rounded-full bg-accent animate-pulse-glow" />
+          <a href="#" className="flex items-center gap-3 font-heading text-2xl font-bold text-text-primary no-underline">
+            <img src="/assets/logo-primary.png" alt="Pixel Studio" width="36" height="36" className="rounded-lg object-contain" />
             Pixel Studio
           </a>
 
@@ -59,7 +59,7 @@ export default function Navbar() {
               href="#contact"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-accent to-accent-secondary hover:shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 transition-all duration-300"
             >
-              Let&apos;s Talk
+              Let's Talk
             </a>
           </div>
 
@@ -110,7 +110,7 @@ export default function Navbar() {
               transition={{ delay: 0.4 }}
               className="mt-4 px-8 py-4 rounded-2xl text-lg font-semibold text-white bg-gradient-to-r from-accent to-accent-secondary no-underline"
             >
-              Let&apos;s Talk
+              Let's Talk
             </motion.a>
           </motion.div>
         )}
