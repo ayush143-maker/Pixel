@@ -1,15 +1,5 @@
 import { useEffect } from 'react'
-import Navbar from './components/Navbar'
-import Hero from './components/Hero'
-import TechMarquee from './components/TechMarquee'
-import Services from './components/Services'
-import Portfolio from './components/Portfolio'
-import Process from './components/Process'
-import Pricing from './components/Pricing'
-import About from './components/About'
-import FAQ from './components/FAQ'
-import Contact from './components/Contact'
-import Footer from './components/Footer'
+import Home from './pages/Home'
 
 function App() {
   useEffect(() => {
@@ -32,17 +22,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-background text-text-primary font-body">
-      <Navbar />
-      <Hero />
-      <TechMarquee />
-      <Services />
-      <Portfolio />
-      <Process />
-      <Pricing />
-      <About />
-      <FAQ />
-      <Contact />
-      <Footer />
+      <Home />
     </div>
   )
 }
