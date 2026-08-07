@@ -2,6 +2,24 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
 import { Send, MessageCircle, Mail, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react'
 import { supabase, type ContactInfoSettings } from '../lib/supabase'
+import CustomSelect from './CustomSelect'
+
+const PROJECT_TYPE_OPTIONS = [
+  { value: 'landing', label: 'Landing Page' },
+  { value: 'website', label: 'Multi-Page Website' },
+  { value: 'portfolio', label: 'Portfolio Website' },
+  { value: 'ecommerce', label: 'E-Commerce' },
+  { value: 'dashboard', label: 'Dashboard / SaaS' },
+  { value: 'other', label: 'Something Else' },
+]
+
+const BUDGET_OPTIONS = [
+  { value: 'under500', label: 'Under ₹500' },
+  { value: '500-1000', label: '₹500 – ₹1,000' },
+  { value: '1000-2500', label: '₹1,000 – ₹2,500' },
+  { value: '2500-5000', label: '₹2,500 – ₹5,000' },
+  { value: '5000+', label: '₹5,000+' },
+]
 
 const defaultContactInfo: ContactInfoSettings = {
   telegram: '@yourusername',
@@ -147,37 +165,24 @@ export default function Contact() {
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-text-primary">Project Type</label>
-            <select
+            <CustomSelect
               value={formData.projectType}
-              onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] appearance-none cursor-pointer"
+              onChange={(v) => setFormData({ ...formData, projectType: v })}
+              options={PROJECT_TYPE_OPTIONS}
+              placeholder="Select a project type"
               required
-            >
-              <option value="" disabled>Select a project type</option>
-              <option value="landing">Landing Page</option>
-              <option value="website">Multi-Page Website</option>
-              <option value="portfolio">Portfolio Website</option>
-              <option value="ecommerce">E-Commerce</option>
-              <option value="dashboard">Dashboard / SaaS</option>
-              <option value="other">Something Else</option>
-            </select>
+            />
           </div>
 
           <div className="flex flex-col gap-2">
             <label className="text-sm font-medium text-text-primary">Budget</label>
-            <select
+            <CustomSelect
               value={formData.budget}
-              onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] appearance-none cursor-pointer"
+              onChange={(v) => setFormData({ ...formData, budget: v })}
+              options={BUDGET_OPTIONS}
+              placeholder="Select your budget"
               required
-            >
-              <option value="" disabled>Select your budget</option>
-              <option value="under500">Under $500</option>
-              <option value="500-1000">$500 – $1,000</option>
-              <option value="1000-2500">$1,000 – $2,500</option>
-              <option value="2500-5000">$2,500 – $5,000</option>
-              <option value="5000+">$5,000+</option>
-            </select>
+            />
           </div>
 
           <div className="flex flex-col gap-2">
