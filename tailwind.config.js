@@ -7,23 +7,24 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#0A0A0B',
-        surface: '#111113',
+        background: '#0A0A0A',
+        surface: '#111111',
+        surface2: '#161616',
         accent: {
-          DEFAULT: '#8B5CF6',
-          secondary: '#A855F7',
+          DEFAULT: '#10B981',
+          secondary: '#34D399',
         },
         border: 'rgba(255,255,255,0.08)',
-        glow: 'rgba(139,92,246,0.25)',
+        glow: 'rgba(16,185,129,0.25)',
         'text-primary': '#F5F5F5',
-        'text-secondary': '#A1A1AA',
+        'text-secondary': '#A3A3A3',
       },
       fontFamily: {
         heading: ['Space Grotesk', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
       },
       borderRadius: {
-        '2xl': '18px',
+        '2xl': '20px',
         '3xl': '24px',
       },
       animation: {
@@ -38,8 +39,8 @@ export default {
           '50%': { transform: 'translateY(-12px)' },
         },
         'pulse-glow': {
-          '0%, 100%': { boxShadow: '0 0 20px rgba(139,92,246,0.25)' },
-          '50%': { boxShadow: '0 0 40px rgba(139,92,246,0.25), 0 0 60px rgba(139,92,246,0.1)' },
+          '0%, 100%': { boxShadow: '0 0 20px rgba(16,185,129,0.25)' },
+          '50%': { boxShadow: '0 0 40px rgba(16,185,129,0.25), 0 0 60px rgba(16,185,129,0.1)' },
         },
         'gradient-shift': {
           '0%': { backgroundPosition: '0% 50%' },
