@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import { Loader2, Save } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import ImageUpload from './ImageUpload'
 
 interface SettingsEditorProps {
   settingKey: 'hero' | 'about_bio' | 'contact_info'
@@ -9,7 +10,7 @@ interface SettingsEditorProps {
 }
 
 // Field layout per settings key. Nested arrays (stats/paragraphs) are edited as line-separated text.
-const FIELD_MAP: Record<string, { key: string; label: string; type: 'text' | 'textarea' | 'lines' }[]> = {
+const FIELD_MAP: Record<string, { key: string; label: string; type: 'text' | 'textarea' | 'lines' | 'image' }[]> = {
   hero: [
     { key: 'badge', label: 'Availability badge text', type: 'text' },
     { key: 'headline_line1', label: 'Headline — line 1', type: 'text' },
@@ -18,8 +19,8 @@ const FIELD_MAP: Record<string, { key: string; label: string; type: 'text' | 'te
     { key: 'subtext', label: 'Subtext paragraph', type: 'textarea' },
   ],
   about_bio: [
+    { key: 'photo_url', label: 'Profile Photo', type: 'image' },
     { key: 'heading', label: 'Heading', type: 'text' },
-    { key: 'photo_url', label: 'Photo URL (optional)', type: 'text' },
     { key: 'paragraphs', label: 'Bio paragraphs', type: 'lines' },
   ],
   contact_info: [
@@ -121,8 +122,18 @@ export default function SettingsEditor({ settingKey, title, description }: Setti
       <div className="flex flex-col gap-4">
         {fields.map((field) => (
           <div key={field.key} className="flex flex-col gap-2">
-            <label className="text-sm font-medium text-text-primary">{field.label}</label>
-            {field.type === 'textarea' || field.type === 'lines' ? (
+            {field.type !== 'image' && (
+              <label className="text-sm font-medium text-text-primary">{field.label}</label>
+            )}
+            {field.type === 'image' ? (
+              <ImageUpload
+                label={field.label}
+                value={getDisplayValue(field.key, field.type)}
+                onChange={(url) => handleFieldChange(field.key, field.type, url)}
+                folder="about"
+                shape="circle"
+              />
+            ) : field.type === 'textarea' || field.type === 'lines' ? (
               <textarea
                 value={getDisplayValue(field.key, field.type)}
                 onChange={(e) => handleFieldChange(field.key, field.type, e.target.value)}

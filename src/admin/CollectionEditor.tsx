@@ -2,8 +2,9 @@ import { useEffect, useState, type FormEvent } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Plus, Pencil, Trash2, X, Loader2, GripVertical } from 'lucide-react'
 import { supabase } from '../lib/supabase'
+import ImageUpload from './ImageUpload'
 
-export type FieldType = 'text' | 'textarea' | 'tags' | 'lines' | 'boolean' | 'number'
+export type FieldType = 'text' | 'textarea' | 'tags' | 'lines' | 'boolean' | 'number' | 'image'
 
 export interface FieldConfig {
   key: string
@@ -11,6 +12,8 @@ export interface FieldConfig {
   type: FieldType
   placeholder?: string
   required?: boolean
+  /** Storage folder to upload into, used when type === 'image' */
+  folder?: string
 }
 
 interface CollectionEditorProps {
@@ -230,10 +233,17 @@ export default function CollectionEditor({ table, fields, titleField, subtitleFi
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
                 {fields.map((field) => (
                   <div key={field.key} className="flex flex-col gap-2">
-                    {field.type !== 'boolean' && (
+                    {field.type !== 'boolean' && field.type !== 'image' && (
                       <label className="text-sm font-medium text-text-primary">{field.label}</label>
                     )}
-                    {field.type === 'textarea' || field.type === 'lines' ? (
+                    {field.type === 'image' ? (
+                      <ImageUpload
+                        label={field.label}
+                        value={String(formState[field.key] ?? '')}
+                        onChange={(url) => setFormState({ ...formState, [field.key]: url })}
+                        folder={field.folder ?? table}
+                      />
+                    ) : field.type === 'textarea' || field.type === 'lines' ? (
                       <textarea
                         value={String(formState[field.key] ?? '')}
                         onChange={(e) => setFormState({ ...formState, [field.key]: e.target.value })}
