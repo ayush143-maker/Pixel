@@ -68,26 +68,29 @@ export default function About() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 items-center mt-12">
-        {/* Image Card */}
+        {/* Profile Photo — circular, Instagram-DP style */}
         <motion.div
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
-          className="glass-card p-2 rounded-3xl overflow-hidden"
+          className="flex justify-center md:justify-start"
         >
-          <div className="w-full aspect-square rounded-[18px] bg-surface2 flex items-center justify-center relative overflow-hidden">
-            {bio.photo_url ? (
-              <img src={bio.photo_url} alt="Portrait" className="w-full h-full object-cover" />
-            ) : (
-              <>
-                <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.1] to-accent-secondary/[0.05]" />
-                <div className="z-[1] text-center px-6">
-                  <div className="text-7xl mb-4 opacity-20">👤</div>
-                  <p className="text-text-secondary text-sm">Your photo here</p>
-                </div>
-              </>
-            )}
+          <div className="relative w-[240px] h-[240px] sm:w-[300px] sm:h-[300px] md:w-[340px] md:h-[340px] flex-shrink-0">
+            {/* Soft glow ring */}
+            <div className="absolute -inset-3 rounded-full bg-gradient-to-br from-accent/25 to-accent-secondary/10 blur-xl" />
+            <div className="relative w-full h-full rounded-full p-1.5 bg-gradient-to-br from-accent to-accent-secondary">
+              <div className="w-full h-full rounded-full overflow-hidden bg-surface2 border-4 border-background flex items-center justify-center relative">
+                {bio.photo_url ? (
+                  <img src={bio.photo_url} alt="Portrait" className="w-full h-full object-cover" />
+                ) : (
+                  <>
+                    <div className="absolute inset-0 bg-gradient-to-br from-accent/[0.1] to-accent-secondary/[0.05]" />
+                    <div className="z-[1] text-7xl opacity-20">👤</div>
+                  </>
+                )}
+              </div>
+            </div>
           </div>
         </motion.div>
 
