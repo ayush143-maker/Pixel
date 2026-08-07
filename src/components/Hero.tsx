@@ -14,7 +14,7 @@ const itemVariants = {
   visible: {
     y: 0,
     opacity: 1,
-    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] },
+    transition: { duration: 0.8, ease: [0.16, 1, 0.3, 1] as const },
   },
 }
 
@@ -30,12 +30,10 @@ export default function Hero() {
       id="hero"
       className="relative min-h-screen flex items-center justify-center overflow-hidden px-6 pt-32 pb-20"
     >
-      {/* Background orbs */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute w-[500px] h-[500px] rounded-full bg-accent/40 blur-[100px] -top-[10%] -right-[10%] animate-float" />
         <div className="absolute w-[400px] h-[400px] rounded-full bg-accent-secondary/40 blur-[100px] -bottom-[10%] -left-[10%] animate-float" style={{ animationDirection: 'reverse', animationDuration: '12s' }} />
         <div className="absolute w-[300px] h-[300px] rounded-full bg-accent/30 blur-[100px] top-[40%] left-[30%] animate-float" style={{ animationDelay: '2s', animationDuration: '8s' }} />
-        {/* Grid */}
         <div
           className="absolute inset-0"
           style={{
