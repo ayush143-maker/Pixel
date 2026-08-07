@@ -1,54 +1,50 @@
+import { useEffect, useState } from 'react'
 import { motion, type Variants } from 'framer-motion'
 import { ExternalLink, BookOpen, Github } from 'lucide-react'
+import { supabase, type PortfolioProject } from '../lib/supabase'
 
-const projects = [
+const defaultProjects: PortfolioProject[] = [
   {
+    id: 'd1',
     title: 'Luxe Commerce',
     description: 'A premium e-commerce platform with immersive product showcases, smooth checkout flows, and real-time inventory management.',
     tags: ['Next.js', 'TypeScript', 'Stripe', 'Tailwind'],
     icon: '🛍️',
-    hasCaseStudy: true,
-    hasGithub: false,
+    image_url: null,
+    live_url: null,
+    case_study_url: null,
+    github_url: null,
+    has_case_study: true,
+    has_github: false,
+    sort_order: 1,
   },
   {
+    id: 'd2',
     title: 'Analytics Dashboard',
     description: 'Real-time data visualization dashboard with interactive charts, custom reporting, and role-based access control.',
     tags: ['React', 'D3.js', 'Node.js', 'PostgreSQL'],
     icon: '📊',
-    hasCaseStudy: true,
-    hasGithub: false,
+    image_url: null,
+    live_url: null,
+    case_study_url: null,
+    github_url: null,
+    has_case_study: true,
+    has_github: false,
+    sort_order: 2,
   },
   {
+    id: 'd3',
     title: 'Property Finder',
     description: 'Modern real estate platform with advanced search filters, interactive maps, and virtual tour integrations.',
     tags: ['Next.js', 'Mapbox', 'Prisma', 'Vercel'],
     icon: '🏠',
-    hasCaseStudy: true,
-    hasGithub: false,
-  },
-  {
-    title: 'SoundWave App',
-    description: 'Music streaming interface with waveform visualizations, playlist management, and seamless audio playback.',
-    tags: ['React', 'Web Audio API', 'Canvas', 'Firebase'],
-    icon: '🎵',
-    hasCaseStudy: false,
-    hasGithub: true,
-  },
-  {
-    title: 'Editorial CMS',
-    description: 'Headless content management system for digital publications with markdown editing and SEO automation.',
-    tags: ['Next.js', 'Sanity', 'MDX', 'Vercel'],
-    icon: '✍️',
-    hasCaseStudy: true,
-    hasGithub: false,
-  },
-  {
-    title: 'Design System',
-    description: 'Comprehensive component library with documentation, theming, and accessibility-first design patterns.',
-    tags: ['React', 'Storybook', 'TypeScript', 'Tailwind'],
-    icon: '🎨',
-    hasCaseStudy: false,
-    hasGithub: true,
+    image_url: null,
+    live_url: null,
+    case_study_url: null,
+    github_url: null,
+    has_case_study: true,
+    has_github: false,
+    sort_order: 3,
   },
 ]
 
@@ -67,6 +63,18 @@ const cardVariants: Variants = {
 }
 
 export default function Portfolio() {
+  const [projects, setProjects] = useState<PortfolioProject[]>(defaultProjects)
+
+  useEffect(() => {
+    supabase
+      .from('portfolio_projects')
+      .select('*')
+      .order('sort_order', { ascending: true })
+      .then(({ data }) => {
+        if (data && data.length > 0) setProjects(data as PortfolioProject[])
+      })
+  }, [])
+
   return (
     <section id="portfolio" className="section">
       <div className="reveal">
@@ -85,19 +93,25 @@ export default function Portfolio() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mt-12"
       >
         {projects.map((project) => (
           <motion.div
-            key={project.title}
+            key={project.id}
             variants={cardVariants}
-            className="glass-card overflow-hidden group"
+            className="glass-card overflow-hidden group flex flex-col"
           >
-            <div className="w-full h-[220px] bg-gradient-to-br from-[#1a1a2e] to-[#16213e] relative overflow-hidden flex items-center justify-center">
-              <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/5" />
-              <span className="text-5xl opacity-30 z-[1]">{project.icon}</span>
+            <div className="w-full h-[200px] sm:h-[220px] bg-surface2 relative overflow-hidden flex items-center justify-center flex-shrink-0">
+              {project.image_url ? (
+                <img src={project.image_url} alt={project.title} className="w-full h-full object-cover" />
+              ) : (
+                <>
+                  <div className="absolute inset-0 bg-gradient-to-br from-accent/10 to-accent-secondary/5" />
+                  <span className="text-5xl opacity-30 z-[1]">{project.icon}</span>
+                </>
+              )}
             </div>
-            <div className="p-7">
+            <div className="p-6 sm:p-7 flex flex-col flex-1">
               <h3 className="font-heading text-xl font-semibold text-text-primary mb-2">
                 {project.title}
               </h3>
@@ -114,21 +128,34 @@ export default function Portfolio() {
                   </span>
                 ))}
               </div>
-              <div className="flex gap-3 flex-wrap">
-                <button className="px-5 py-2.5 rounded-[10px] text-[13px] font-semibold text-white bg-gradient-to-r from-accent to-accent-secondary hover:shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 transition-all flex items-center gap-1.5">
+              <div className="flex gap-3 flex-wrap mt-auto">
+                <a
+                  href={project.live_url || '#contact'}
+                  target={project.live_url ? '_blank' : undefined}
+                  rel={project.live_url ? 'noopener noreferrer' : undefined}
+                  className="px-5 py-2.5 rounded-[10px] text-[13px] font-semibold text-[#04120D] bg-gradient-to-r from-accent to-accent-secondary hover:shadow-[0_4px_20px_rgba(16,185,129,0.25)] hover:-translate-y-0.5 transition-all flex items-center gap-1.5"
+                >
                   <ExternalLink size={14} />
                   Live Preview
-                </button>
-                {project.hasCaseStudy && (
-                  <button className="px-5 py-2.5 rounded-[10px] text-[13px] font-semibold text-text-secondary border border-white/[0.08] hover:border-accent/30 hover:text-text-primary transition-all">
+                </a>
+                {project.has_case_study && (
+                  <a
+                    href={project.case_study_url || '#contact'}
+                    className="px-5 py-2.5 rounded-[10px] text-[13px] font-semibold text-text-secondary border border-white/[0.08] hover:border-accent/30 hover:text-text-primary transition-all"
+                  >
                     Case Study
-                  </button>
+                  </a>
                 )}
-                {project.hasGithub && (
-                  <button className="px-5 py-2.5 rounded-[10px] text-[13px] font-semibold text-text-secondary border border-white/[0.08] hover:border-accent/30 hover:text-text-primary transition-all flex items-center gap-1.5">
+                {project.has_github && (
+                  <a
+                    href={project.github_url || '#'}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="px-5 py-2.5 rounded-[10px] text-[13px] font-semibold text-text-secondary border border-white/[0.08] hover:border-accent/30 hover:text-text-primary transition-all flex items-center gap-1.5"
+                  >
                     <Github size={14} />
                     GitHub
-                  </button>
+                  </a>
                 )}
               </div>
             </div>

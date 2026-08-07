@@ -30,13 +30,13 @@ const socialLinks = [
 
 export default function Footer() {
   return (
-    <footer className="border-t border-white/[0.08] pt-16 pb-8 px-6">
+    <footer className="border-t border-white/[0.08] pt-16 pb-8 px-5 sm:px-6">
       <div className="max-w-[1200px] mx-auto">
         <div className="flex justify-between items-start flex-wrap gap-10 mb-12">
           {/* Brand */}
           <div className="max-w-[320px]">
-            <a href="#" className="flex items-center gap-3 font-heading text-2xl font-bold text-text-primary no-underline mb-4">
-              <img src="/assets/logo-primary.png" alt="Pixel Studio" width="32" height="32" className="rounded-lg object-contain" />
+            <a href="#" className="flex items-center gap-2.5 font-heading text-2xl font-bold text-text-primary no-underline mb-4">
+              <img src="/assets/logo-icon.png" alt="Pixel Studio" width="30" height="30" className="object-contain flex-shrink-0" />
               Pixel Studio
             </a>
             <p className="text-sm text-text-secondary leading-relaxed">

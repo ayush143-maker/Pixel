@@ -1,19 +1,51 @@
-import { useState, type FormEvent } from 'react'
+import { useEffect, useState, type FormEvent } from 'react'
 import { motion } from 'framer-motion'
-import { Send, MessageCircle, Mail, ArrowRight } from 'lucide-react'
+import { Send, MessageCircle, Mail, ArrowRight, CheckCircle2, AlertCircle } from 'lucide-react'
+import { supabase, type ContactInfoSettings } from '../lib/supabase'
+
+const defaultContactInfo: ContactInfoSettings = {
+  telegram: '@yourusername',
+  telegram_url: 'https://t.me/yourusername',
+  email: 'hello@pixelstudio.dev',
+  response_time: 'Telegram: < 2 hours • Email: < 24 hours',
+}
 
 export default function Contact() {
+  const [contactInfo, setContactInfo] = useState<ContactInfoSettings>(defaultContactInfo)
   const [formData, setFormData] = useState({
     name: '',
     projectType: '',
     budget: '',
     message: '',
   })
+  const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle')
 
-  const handleSubmit = (e: FormEvent) => {
+  useEffect(() => {
+    supabase
+      .from('site_settings')
+      .select('value')
+      .eq('key', 'contact_info')
+      .maybeSingle()
+      .then(({ data }) => {
+        if (data?.value) setContactInfo({ ...defaultContactInfo, ...(data.value as Partial<ContactInfoSettings>) })
+      })
+  }, [])
+
+  const handleSubmit = async (e: FormEvent) => {
     e.preventDefault()
-    // Handle form submission
-    console.log(formData)
+    setStatus('submitting')
+    const { error } = await supabase.from('contact_submissions').insert({
+      name: formData.name,
+      project_type: formData.projectType,
+      budget: formData.budget,
+      message: formData.message,
+    })
+    if (error) {
+      setStatus('error')
+      return
+    }
+    setStatus('success')
+    setFormData({ name: '', projectType: '', budget: '', message: '' })
   }
 
   return (
@@ -29,7 +61,7 @@ export default function Contact() {
         </p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-12">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-10 md:gap-16 mt-12">
         {/* Contact Info */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
@@ -48,46 +80,46 @@ export default function Contact() {
 
           <div className="flex flex-col gap-4">
             <a
-              href="https://t.me/yourusername"
+              href={contactInfo.telegram_url}
               target="_blank"
               rel="noopener noreferrer"
               className="flex items-center gap-4 p-5 rounded-2xl bg-surface/40 border border-white/[0.08] hover:border-accent/30 hover:bg-accent/5 transition-all group"
             >
-              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-accent/15 to-accent-secondary/8 flex items-center justify-center text-accent">
+              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-accent/[0.15] to-accent-secondary/[0.08] flex items-center justify-center text-accent flex-shrink-0">
                 <MessageCircle size={20} />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <h4 className="font-heading text-[15px] font-semibold text-text-primary mb-0.5">
                   Telegram
                 </h4>
-                <p className="text-[13px] text-text-secondary">@yourusername — Primary contact</p>
+                <p className="text-[13px] text-text-secondary truncate">{contactInfo.telegram} — Primary contact</p>
               </div>
-              <ArrowRight size={18} className="text-text-secondary group-hover:text-accent group-hover:translate-x-1 transition-all" />
+              <ArrowRight size={18} className="text-text-secondary group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0" />
             </a>
 
             <a
-              href="mailto:hello@pixelstudio.dev"
+              href={`mailto:${contactInfo.email}`}
               className="flex items-center gap-4 p-5 rounded-2xl bg-surface/40 border border-white/[0.08] hover:border-accent/30 hover:bg-accent/5 transition-all group"
             >
-              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-accent/15 to-accent-secondary/8 flex items-center justify-center text-accent">
+              <div className="w-12 h-12 rounded-[14px] bg-gradient-to-br from-accent/[0.15] to-accent-secondary/[0.08] flex items-center justify-center text-accent flex-shrink-0">
                 <Mail size={20} />
               </div>
-              <div className="flex-1">
+              <div className="flex-1 min-w-0">
                 <h4 className="font-heading text-[15px] font-semibold text-text-primary mb-0.5">
                   Email
                 </h4>
-                <p className="text-[13px] text-text-secondary">hello@pixelstudio.dev</p>
+                <p className="text-[13px] text-text-secondary truncate">{contactInfo.email}</p>
               </div>
-              <ArrowRight size={18} className="text-text-secondary group-hover:text-accent group-hover:translate-x-1 transition-all" />
+              <ArrowRight size={18} className="text-text-secondary group-hover:text-accent group-hover:translate-x-1 transition-all flex-shrink-0" />
             </a>
           </div>
 
-          <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-accent/10 to-accent-secondary/5 border border-accent/20">
+          <div className="mt-8 p-6 rounded-2xl bg-gradient-to-br from-accent/[0.1] to-accent-secondary/5 border border-accent/20">
             <h4 className="font-heading text-sm font-semibold text-text-primary mb-2">
               Typical Response Time
             </h4>
             <p className="text-sm text-text-secondary">
-              Telegram: &lt; 2 hours • Email: &lt; 24 hours
+              {contactInfo.response_time}
             </p>
           </div>
         </motion.div>
@@ -108,7 +140,7 @@ export default function Contact() {
               placeholder="Your name"
               value={formData.name}
               onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(139,92,246,0.1)] placeholder:text-text-secondary/50"
+              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] placeholder:text-text-secondary/50"
               required
             />
           </div>
@@ -118,7 +150,7 @@ export default function Contact() {
             <select
               value={formData.projectType}
               onChange={(e) => setFormData({ ...formData, projectType: e.target.value })}
-              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(139,92,246,0.1)] appearance-none cursor-pointer"
+              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] appearance-none cursor-pointer"
               required
             >
               <option value="" disabled>Select a project type</option>
@@ -136,7 +168,7 @@ export default function Contact() {
             <select
               value={formData.budget}
               onChange={(e) => setFormData({ ...formData, budget: e.target.value })}
-              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(139,92,246,0.1)] appearance-none cursor-pointer"
+              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] appearance-none cursor-pointer"
               required
             >
               <option value="" disabled>Select your budget</option>
@@ -155,15 +187,28 @@ export default function Contact() {
               value={formData.message}
               onChange={(e) => setFormData({ ...formData, message: e.target.value })}
               rows={5}
-              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(139,92,246,0.1)] placeholder:text-text-secondary/50 resize-y min-h-[140px]"
+              className="px-[18px] py-3.5 rounded-[14px] border border-white/[0.08] bg-surface/60 text-text-primary font-body text-[15px] outline-none transition-all focus:border-accent/40 focus:shadow-[0_0_0_3px_rgba(16,185,129,0.1)] placeholder:text-text-secondary/50 resize-y min-h-[140px]"
               required
             />
           </div>
 
-          <button type="submit" className="btn-primary mt-2">
+          {status === 'success' && (
+            <p className="flex items-center gap-2 text-sm text-accent bg-accent/10 border border-accent/20 rounded-xl px-4 py-3">
+              <CheckCircle2 size={16} />
+              Message sent! I&apos;ll get back to you soon.
+            </p>
+          )}
+          {status === 'error' && (
+            <p className="flex items-center gap-2 text-sm text-red-400 bg-red-500/10 border border-red-500/20 rounded-xl px-4 py-3">
+              <AlertCircle size={16} />
+              Something went wrong. Please try again or email me directly.
+            </p>
+          )}
+
+          <button type="submit" disabled={status === 'submitting'} className="btn-primary mt-2 disabled:opacity-60">
             <span className="flex items-center gap-2">
               <Send size={16} />
-              Send Message
+              {status === 'submitting' ? 'Sending…' : 'Send Message'}
             </span>
           </button>
         </motion.form>

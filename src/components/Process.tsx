@@ -67,15 +67,15 @@ export default function Process() {
         initial="hidden"
         whileInView="visible"
         viewport={{ once: true, margin: '-50px' }}
-        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-12 relative"
+        className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 mt-12 relative"
       >
         {steps.map((step) => (
           <motion.div
             key={step.number}
             variants={cardVariants}
-            className="glass-card p-8 flex flex-col items-center text-center gap-5"
+            className="glass-card p-7 sm:p-8 flex flex-col items-center text-center gap-5"
           >
-            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-accent-secondary flex items-center justify-center font-heading text-xl font-bold text-white shadow-[0_4px_20px_rgba(139,92,246,0.25)]">
+            <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-accent to-accent-secondary flex items-center justify-center font-heading text-xl font-bold text-[#04120D] shadow-[0_4px_20px_rgba(16,185,129,0.2)] flex-shrink-0">
               {step.number}
             </div>
             <div>
