@@ -59,7 +59,7 @@ export default function Navbar() {
               href="#contact"
               className="px-5 py-2.5 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-accent to-accent-secondary hover:shadow-[0_4px_20px_rgba(139,92,246,0.25)] hover:-translate-y-0.5 transition-all duration-300"
             >
-              Let's Talk
+              Let&apos;s Talk
             </a>
           </div>
 
@@ -110,7 +110,7 @@ export default function Navbar() {
               transition={{ delay: 0.4 }}
               className="mt-4 px-8 py-4 rounded-2xl text-lg font-semibold text-white bg-gradient-to-r from-accent to-accent-secondary no-underline"
             >
-              Let's Talk
+              Let&apos;s Talk
             </motion.a>
           </motion.div>
         )}

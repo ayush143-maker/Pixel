@@ -32,7 +32,7 @@ export default function About() {
           initial={{ opacity: 0, x: -40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
           className="glass-card p-2 rounded-3xl overflow-hidden"
         >
           <div className="w-full aspect-square rounded-[18px] bg-gradient-to-br from-[#1a1a2e] via-[#16213e] to-[#1a1a2e] flex items-center justify-center relative overflow-hidden">
@@ -49,7 +49,7 @@ export default function About() {
           initial={{ opacity: 0, x: 40 }}
           whileInView={{ opacity: 1, x: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+          transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] as const }}
         >
           <h3 className="font-heading text-[1.75rem] font-semibold text-text-primary mb-5">
             Building experiences that matter

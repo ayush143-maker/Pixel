@@ -12,6 +12,7 @@ export default function Contact() {
 
   const handleSubmit = (e: FormEvent) => {
     e.preventDefault()
+    // Handle form submission
     console.log(formData)
   }
 
@@ -22,13 +23,14 @@ export default function Contact() {
           <Send size={16} />
           Contact
         </div>
-        <h2 className="section-title">Let's Build Something Great</h2>
+        <h2 className="section-title">Let&apos;s Build Something Great</h2>
         <p className="section-subtitle">
-          Have a project in mind? I would love to hear about it. Reach out and let's discuss how we can bring your vision to life.
+          Have a project in mind? I would love to hear about it. Reach out and let&apos;s discuss how we can bring your vision to life.
         </p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-16 mt-12">
+        {/* Contact Info */}
         <motion.div
           initial={{ opacity: 0, x: -30 }}
           whileInView={{ opacity: 1, x: 0 }}
@@ -90,6 +92,7 @@ export default function Contact() {
           </div>
         </motion.div>
 
+        {/* Contact Form */}
         <motion.form
           initial={{ opacity: 0, x: 30 }}
           whileInView={{ opacity: 1, x: 0 }}

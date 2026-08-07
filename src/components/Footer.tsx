@@ -33,6 +33,7 @@ export default function Footer() {
     <footer className="border-t border-white/[0.08] pt-16 pb-8 px-6">
       <div className="max-w-[1200px] mx-auto">
         <div className="flex justify-between items-start flex-wrap gap-10 mb-12">
+          {/* Brand */}
           <div className="max-w-[320px]">
             <a href="#" className="flex items-center gap-3 font-heading text-2xl font-bold text-text-primary no-underline mb-4">
               <img src="/assets/logo-primary.png" alt="Pixel Studio" width="32" height="32" className="rounded-lg object-contain" />
@@ -44,13 +45,18 @@ export default function Footer() {
             </p>
           </div>
 
+          {/* Links */}
           <div className="flex gap-16 flex-wrap">
             <div>
               <h4 className="font-heading text-sm font-semibold text-text-primary mb-4 uppercase tracking-wider">
                 Services
               </h4>
               {footerLinks.services.map((link) => (
-                <a key={link.label} href={link.href} className="block text-sm text-text-secondary hover:text-accent transition-colors mb-2.5 no-underline">
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="block text-sm text-text-secondary hover:text-accent transition-colors mb-2.5 no-underline"
+                >
                   {link.label}
                 </a>
               ))}
@@ -60,7 +66,11 @@ export default function Footer() {
                 Company
               </h4>
               {footerLinks.company.map((link) => (
-                <a key={link.label} href={link.href} className="block text-sm text-text-secondary hover:text-accent transition-colors mb-2.5 no-underline">
+                <a
+                  key={link.label}
+                  href={link.href}
+                  className="block text-sm text-text-secondary hover:text-accent transition-colors mb-2.5 no-underline"
+                >
                   {link.label}
                 </a>
               ))}
@@ -84,6 +94,7 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Bottom */}
         <div className="border-t border-white/[0.08] pt-6 flex justify-between items-center flex-wrap gap-4">
           <p className="text-[13px] text-text-secondary">
             © {new Date().getFullYear()} Pixel Studio. All rights reserved.
